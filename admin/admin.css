@@ -1,0 +1,209 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    padding-top: 70px;
+  }
+  
+  /* Header */
+  .admin-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: maroon;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .admin-header h1 {
+    margin: 0;
+    font-size: 24px;
+    padding-left: 20px;
+  }
+  
+  .logout-btn {
+    background-color: white;
+    color: maroon;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-right: 60px;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    background-color: #f2f2f2;
+  }
+  
+  /* Metrics Section */
+  .admin-metrics {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px auto;
+    flex-wrap: wrap;
+  }
+  
+  .metric-box {
+    background-color: white;
+    border-left: 6px solid maroon;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    text-align: center;
+  }
+  
+  .metric-box h2 {
+    margin-top: 0;
+    color: maroon;
+  }
+  
+  .metric-box p {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 10px 0 0;
+  }
+  
+  /* Add Salon Form Section */
+  .add-salon-form {
+    background-color: white;
+    max-width: 600px;
+    margin: 20px auto 60px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-salon-form h2 {
+    text-align: center;
+    margin-top: 0;
+    color: maroon;
+    margin-bottom: 25px;
+  }
+  
+  .add-salon-form form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .add-salon-form form input[type="text"],
+  .add-salon-form form input[type="number"],
+  .add-salon-form form input[type="file"],
+  .add-salon-form form textarea,
+  .add-salon-form form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .contact-field {
+    display: flex;
+    align-items: center;
+  }
+  
+  .contact-field span {
+    padding: 10px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .contact-field input {
+    flex: 1;
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+  }
+  
+  /* Services Section */
+  #services-container {
+    margin-top: 20px;
+  }
+  
+  .service-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  
+  .service-row input[type="text"],
+  .service-row input[type="number"] {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  
+  .service-row button {
+    background-color: maroon;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 38px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .service-row button:hover {
+    background-color: #a00000;
+  }
+  
+  /* Form Buttons */
+  .add-salon-form form button[type="button"],
+  .add-salon-form form button[type="submit"] {
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 16px;
+    background-color: maroon;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .add-salon-form form button[type="button"]:hover,
+  .add-salon-form form button[type="submit"]:hover {
+    background-color: #a00000;
+  }
+  
+  /* Feedback Message */
+  #response-msg {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  #response-msg.success {
+    color: green;
+  }
+  
+  #response-msg.error {
+    color: red;
+  }
+  

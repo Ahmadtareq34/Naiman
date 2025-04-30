@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Manual - Naiman</title>
+    <link rel="stylesheet" href="../nav/nav.css" />
+    <link rel="stylesheet" href="user-manual.css" />
+    <link rel="stylesheet" href="../footer/footer.css" />
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+    <section class="manual-section">
+      <h1>📘 User Manual</h1>
+
+      <div class="manual-container">
+        <section class="guide">
+          <h2>👣 How to Use the Naiman Website</h2>
+          <ol>
+            <li>
+              <strong>Create an Account:</strong> Click “Sign Up” in the top
+              navigation bar and enter your details.
+            </li>
+            <li>
+              <strong>Browse Categories:</strong> Through the home page or click
+              the dropdown icon in the top left to explore all salon categories.
+            </li>
+            <li>
+              <strong>View Recommended Salons:</strong> Head to the
+              “Recommended” page to discover top-rated salons by category.
+            </li>
+            <li>
+              <strong>Select a Salon:</strong> Choose a salon and explore its
+              services, pricing, and contact details.
+            </li>
+            <li>
+              <strong>Book an Appointment:</strong> Pick your services, select a
+              time, and confirm your booking with payment.
+            </li>
+            <li>
+              <strong>Manage Favorites:</strong> Click the heart icon (🤍) to
+              save a salon. View and manage favorites from the top nav bar.
+            </li>
+            <li>
+              <strong>Track Bookings:</strong> In your account menu, you can
+              view all your <strong>current and past bookings</strong>.
+            </li>
+            <li>
+              <strong>Explore Courses:</strong> Visit the “Courses” section to
+              enroll in certified beauty & self-care programs.
+            </li>
+          </ol>
+        </section>
+
+        <section class="faq">
+          <h2>❓ Frequently Asked Questions</h2>
+
+          <div class="faq-item">
+            <h3>Do I need to be logged in to book an appointment?</h3>
+            <p>
+              ✅ Yes. You must be signed in to book services or save your
+              favorite salons.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can I view my previous bookings?</h3>
+            <p>
+              🗓️ Yes! Go to your account icon and select “Bookings” to view both
+              current and past appointments.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>What is the “Recommended” page for?</h3>
+            <p>
+              🌟 The recommended page shows the highest-rated salons across each
+              category — handpicked for quality.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Is my payment information safe?</h3>
+            <p>
+              🔒 Absolutely. We do not store payment details — all transactions
+              are securely processed.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can I take a course without booking any services?</h3>
+            <p>
+              🎓 Yes! Our courses are available to everyone — even if you don’t
+              use the salon services.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>How do I find a specific category?</h3>
+            <p>
+              📂 Use the dropdown menu in the top left of the navigation bar to
+              browse by category.
+            </p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("../nav/nav.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("navbar").innerHTML = data;
+          });
+
+        fetch("../footer/footer.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("footer-container").innerHTML = data;
+          });
+      });
+    </script>
+
+    <script src="../nav/nav.js"></script>
+    <script src="../footer/footer.js"></script>
+  </body>
+</html>

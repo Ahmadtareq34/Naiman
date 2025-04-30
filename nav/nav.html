@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navbar</title>
+    <link rel="stylesheet" href="/nav/nav.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <!-- Left Section -->
+      <div class="navbar-left">
+        <button class="dropdown-icon">☰</button>
+        <a href="../home/index.html" class="logo">
+          <img
+            src="../images/Naiman Logo No Background.png"
+            alt="Logo"
+            class="logo-img"
+          />
+        </a>
+        <div class="dropdown-menu">
+          <a href="/categories/barbershop.html" class="dropdown-item"
+            >Barber Shop</a
+          >
+          <a href="/categories/hairsalon.html" class="dropdown-item"
+            >Hair Salon</a
+          >
+          <a href="/categories/nailsalon.html" class="dropdown-item"
+            >Nail Salon</a
+          >
+          <a href="/categories/massage.html" class="dropdown-item">Massage</a>
+          <a href="/categories/makeup.html" class="dropdown-item">Makeup</a>
+          <a href="/categories/hairremoval.html" class="dropdown-item"
+            >Hair Removal</a
+          >
+          <a href="/categories/skincare.html" class="dropdown-item"
+            >Skin Care</a
+          >
+          <a href="/categories/spa.html" class="dropdown-item">Spa</a>
+          <a href="/categories/therapy.html" class="dropdown-item">Therapy</a>
+        </div>
+      </div>
+
+      <!-- Center Section -->
+      <div class="navbar-center">
+        <a href="../home/index.html" class="nav-link">Home</a>
+        <a href="../recommend/recommended.html" class="nav-link">Recommended</a>
+        <a href="../aboutus/about.html" class="nav-link">About&nbsp;Us</a>
+      </div>
+
+      <!-- Right Section -->
+      <div class="navbar-right">
+        <a href="../favorites/favorites.html" class="nav-icon"
+          ><span>❤</span></a
+        >
+        <input
+          type="text"
+          id="nav-search"
+          class="search-bar"
+          placeholder="Search..."
+        />
+
+        <!-- Before login -->
+        <div id="auth-buttons">
+          <a href="../login/login.html" class="login-button">Login</a>
+          <a href="../signup/signup.html" class="signup-button">Sign&nbsp;Up</a>
+        </div>
+
+        <!-- After login -->
+        <div id="account-section" class="hidden">
+          <div class="account-icon" id="account-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="white"
+            >
+              <path
+                d="M12 12c2.67 0 8 1.34 8 4v2H4v-2c0-2.66 5.33-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"
+              />
+            </svg>
+          </div>
+          <div class="account-dropdown" id="account-dropdown">
+            <p id="user-email"></p>
+            <button
+              onclick="window.location.href='/bookings/mybookings.html'"
+              type="button"
+              class="dropdown-link"
+            >
+              My Bookings
+            </button>
+            <button id="logout-button" type="button" class="dropdown-link">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <script src="/nav/nav.js" defer></script>
+  </body>
+</html>

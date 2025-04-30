@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up Page</title>
+    <link rel="stylesheet" href="sign.css" />
+  </head>
+  <body>
+    <div class="signup-container">
+      <!-- Left Half (Logo) -->
+      <div class="signup-left">
+        <a href="../home/index.html">
+          <img
+            src="/images/Naiman Logo No Background.png"
+            alt="Logo"
+            class="logo"
+          />
+        </a>
+      </div>
+
+      <!-- Right Half (Sign-Up Form) -->
+      <div class="signup-right">
+        <div class="signup-box">
+          <h1>New Here?</h1>
+          <p>Please Enter Your Sign Up Details</p>
+
+          <!-- Error Display -->
+          <div class="error-tab hidden" id="error-tab"></div>
+
+          <!-- Sign-Up Form -->
+          <form
+            action="/signup"
+            method="POST"
+            id="signup-form"
+          >
+            <div class="name-fields">
+              <div class="input-container">
+                <label for="first-name">First Name</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  id="first-name"
+                  placeholder="First Name"
+                  required
+                />
+                <hr />
+              </div>
+
+              <div class="input-container">
+                <label for="last-name">Last Name</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  id="last-name"
+                  placeholder="Last Name"
+                  required
+                />
+                <hr />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="input-container">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+              />
+              <hr />
+            </div>
+
+            <!-- Password -->
+            <div class="input-container password-field">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                class="eye-icon"
+                id="togglePassword"
+              >
+                <path
+                  d="M12 4.5C7.305 4.5 3.354 7.182 1.5 11.25c1.854 4.068 5.805 6.75 10.5 6.75s8.646-2.682 10.5-6.75C20.646 7.182 16.695 4.5 12 4.5zm0 10.5a3.75 3.75 0 1 1 0-7.5 3.75 3.75 0 0 1 0 7.5z"
+                />
+              </svg>
+              <hr />
+            </div>
+
+            <!-- Terms and Services -->
+            <div class="terms-container">
+              <input type="checkbox" id="agree" required />
+              <label for="agree">
+                I agree to the
+                <a href="#" onclick="openTerms(); return false;"
+                  >Terms and Services</a
+                >
+              </label>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="signup-btn">Sign Up</button>
+          </form>
+
+          <!-- Remember Me -->
+          <div class="remember-container">
+            <input type="checkbox" id="remember-me" />
+            <label for="remember-me">Remember Me</label>
+          </div>
+
+          <!-- Admin Link -->
+          <div class="admin-link">
+            <span>Are you an</span>
+            <a href="../admin/adminlogin.html">Admin?</a>
+          </div>
+          <div class="login-link" style="margin-top: 15px; text-align: center">
+            <span>Already a user?</span>
+            <a
+              href="../login/login.html"
+              style="
+                color: maroon;
+                text-decoration: underline;
+                font-weight: bold;
+              "
+              >Log In</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeTerms()">&times;</span>
+        <h2>Terms and Services</h2>
+        <ul>
+          <li>
+            You must provide accurate, complete, and current personal
+            information during sign-up.
+          </li>
+          <li>
+            You agree to treat all service providers with professionalism and
+            respect.
+          </li>
+          <li>
+            Arriving on time to booked appointments is required. Frequent
+            no-shows may result in account suspension.
+          </li>
+          <li>
+            Misuse of the platform (e.g., fraud, harassment, or false
+            information) is strictly prohibited and may lead to a ban.
+          </li>
+          <li>
+            Naiman is not responsible for disputes between users and service
+            providers; resolution must be handled directly.
+          </li>
+          <li>
+            Your personal data will be processed in accordance with our privacy
+            policy.
+          </li>
+          <li>
+            Naiman reserves the right to modify these terms at any time.
+            Continued use of the platform implies acceptance of updates.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Show/Hide Password Script -->
+    <script>
+      const togglePassword = document.querySelector("#togglePassword");
+      const password = document.querySelector("#password");
+      togglePassword.addEventListener("click", function () {
+        const type =
+          password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        this.classList.toggle("active");
+      });
+    </script>
+
+    <!-- Terms Modal Script -->
+    <script>
+      function openTerms() {
+        document.getElementById("termsModal").style.display = "block";
+      }
+
+      function closeTerms() {
+        document.getElementById("termsModal").style.display = "none";
+      }
+
+      window.onclick = function (event) {
+        const modal = document.getElementById("termsModal");
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+
+    <!-- Sign Up Logic -->
+    <script src="sign.js"></script>
+  </body>
+</html>

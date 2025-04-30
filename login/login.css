@@ -1,0 +1,182 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: maroon;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    display: flex;
+    width: 80%;
+    height: 80vh;
+    background-color: maroon;
+}
+
+/* Left Side (Logo) */
+.login-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 70%; 
+    cursor: pointer;
+}
+
+/* Right Side (Login Form) */
+.error-tab {
+    color: red;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+    list-style-type: none;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  
+.login-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: maroon;
+}
+
+.login-box {
+    background-color: white;
+    padding: 40px;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-box h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: maroon;
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.input-container {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-container label {
+    display: block;
+    font-size: 14px;
+    color: maroon;
+    margin-bottom: 5px;
+}
+
+.input-container input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+}
+
+/* Password Field with Eye Icon */
+.password-field {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    cursor: pointer;
+    fill: #333;
+}
+
+.eye-icon.active {
+    fill: maroon;
+}
+
+/* Login Button */
+.login-btn {
+    background-color: maroon;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.login-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Remember Me Checkbox and Forgot Password Link */
+.remember-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+}
+
+.remember-container input {
+    margin-right: 5px; 
+}
+
+.forgot-password {
+    margin-left: auto; 
+    color: maroon;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    color: #cc0000;
+}
+
+
+/* Admin Link Styling */
+.admin-link {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.admin-link a {
+    color: maroon;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.admin-link a:hover {
+    color: #cc0000;
+}

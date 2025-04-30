@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salon Details</title>
+    <link rel="stylesheet" href="../saloons/saloon.css" />
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+    <section class="salon-container">
+      <div class="salon-left">
+        <img id="salon-image" src="" alt="Salon Image" />
+      </div>
+
+      <div class="salon-right">
+        <h1 id="salon-name"></h1>
+        <div id="services-section"></div>
+
+        <label>Select Date:</label>
+        <input type="date" id="booking-date" required />
+
+        <label>Select Time:</label>
+        <div id="time-slots" class="time-slot-container"></div>
+        <input type="hidden" id="booking-time" />
+
+        <p><b>📍 Location:</b> <span id="salon-location"></span></p>
+        <p><b>📞 Contact:</b> <span id="salon-contact"></span></p>
+        <button id="book-now">Book Now</button>
+      </div>
+    </section>
+
+    <!-- REVIEW SECTION -->
+    <section id="reviews-section" class="reviews-container">
+      <h3>Reviews (⭐<span id="rating">0</span>/5)</h3>
+      <div id="reviews-list"></div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const saloonId = urlParams.get("id");
+        const bookingDate = document.getElementById("booking-date");
+        const bookingTime = document.getElementById("booking-time");
+        const timeSlotsContainer = document.getElementById("time-slots");
+
+        // Load Navbar
+        fetch("../nav/nav.html")
+          .then((res) => res.text())
+          .then((data) => {
+            document.getElementById("navbar").innerHTML = data;
+          });
+
+        // Load Footer
+        fetch("../footer/footer.html")
+          .then((res) => res.text())
+          .then((data) => {
+            document.getElementById("footer-container").innerHTML = data;
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "../footer/footer.css";
+            document.head.appendChild(link);
+          });
+
+        // Set min date to today
+        bookingDate.min = new Date().toISOString().split("T")[0];
+
+        // Fetch salon details and services
+        fetch(`/saloons/details/${saloonId}`)
+          .then((res) => res.json())
+          .then((salon) => {
+            document.getElementById(
+              "salon-image"
+            ).src = `${salon.image_path}`;
+            document.getElementById("salon-name").textContent = salon.name;
+            document.getElementById("salon-location").textContent =
+              salon.location;
+            document.getElementById("salon-contact").textContent =
+              salon.contact;
+
+            return fetch(`/saloons/${saloonId}/services`);
+          })
+          .then((res) => res.json())
+          .then((services) => {
+            const section = document.getElementById("services-section");
+            section.innerHTML = "<h2>Available Services</h2>";
+            services.forEach((s) => {
+              section.innerHTML += `
+                <div>
+                  <input type="checkbox" class="service-checkbox" value="${s.id}" data-duration="30" data-price="${s.price}" id="service-${s.id}">
+                  <label for="service-${s.id}">${s.service_name} - ${s.price} QAR</label>
+                </div>
+              `;
+            });
+          })
+          .catch((error) => console.error("Error fetching services:", error));
+
+        // Fetch and display reviews
+        fetch(`/reviews/${saloonId}`)
+          .then((res) => res.json())
+          .then((reviews) => {
+            const list = document.getElementById("reviews-list");
+            if (!reviews.length) {
+              list.innerHTML = "<p>No reviews yet.</p>";
+              return;
+            }
+            let sum = 0;
+            reviews.forEach((r) => {
+              sum += r.rating;
+              list.innerHTML += `
+                <div class="review">
+                  <p>⭐ ${r.rating}/5</p>
+                  <p>${r.comment}</p>
+                </div>
+              `;
+            });
+            document.getElementById("rating").textContent = (
+              sum / reviews.length
+            ).toFixed(1);
+          });
+
+        // Generate time slots as clickable buttons
+        function updateAvailableTimeSlots() {
+          timeSlotsContainer.innerHTML = "";
+          bookingTime.value = "";
+
+          const checkedCount = document.querySelectorAll(
+            ".service-checkbox:checked"
+          ).length;
+          if (!bookingDate.value || checkedCount === 0) return;
+
+          const duration = checkedCount * 30;
+
+          fetch(
+            `/bookings/unavailable?saloon_id=${saloonId}&date=${bookingDate.value}`
+          )
+            .then((res) => res.json())
+            .then((bookedSlots) => {
+              const opening = 8 * 60;
+              const closing = 23 * 60;
+
+              for (let i = opening; i <= closing - duration; i += 30) {
+                const start = i;
+                const end = i + duration;
+                const formatted = minutesToTime(start);
+
+                const overlaps = bookedSlots.some((slot) => {
+                  const startM = timeToMinutes(slot.start);
+                  const endM = timeToMinutes(slot.end);
+                  return start < endM && end > startM;
+                });
+
+                const btn = document.createElement("button");
+                btn.className = "time-slot";
+                btn.textContent = formatted;
+                btn.dataset.time = formatted;
+
+                if (overlaps) {
+                  btn.classList.add("booked");
+                  btn.disabled = true;
+                } else {
+                  btn.addEventListener("click", () => {
+                    document
+                      .querySelectorAll(".time-slot")
+                      .forEach((b) => b.classList.remove("selected"));
+                    btn.classList.add("selected");
+                    bookingTime.value = formatted;
+                  });
+                }
+
+                timeSlotsContainer.appendChild(btn);
+              }
+            })
+            .catch((error) =>
+              console.error("Error fetching unavailable slots:", error)
+            );
+        }
+
+        function timeToMinutes(t) {
+          const [h, m] = t.split(":").map(Number);
+          return h * 60 + m;
+        }
+
+        function minutesToTime(mins) {
+          const h = String(Math.floor(mins / 60)).padStart(2, "0");
+          const m = String(mins % 60).padStart(2, "0");
+          return `${h}:${m}`;
+        }
+
+        bookingDate.addEventListener("change", updateAvailableTimeSlots);
+        document.addEventListener("change", (e) => {
+          if (e.target.classList.contains("service-checkbox")) {
+            updateAvailableTimeSlots();
+          }
+        });
+
+        document.getElementById("book-now").addEventListener("click", () => {
+          fetch("/auth/user-status", {
+            credentials: "include",
+          })
+            .then((res) => res.json())
+            .then((user) => {
+              if (!user.loggedIn)
+                return (window.location.href = "../login/login.html");
+
+              const selectedCheckboxes = Array.from(
+                document.querySelectorAll(".service-checkbox:checked")
+              );
+              if (
+                !bookingDate.value ||
+                !bookingTime.value ||
+                selectedCheckboxes.length === 0
+              ) {
+                return alert(
+                  "Please select date, time, and at least one service."
+                );
+              }
+
+              // Map each checked service into an object containing id, label, and price
+              const services = selectedCheckboxes.map((cb) => ({
+                id: cb.value,
+                label: cb.nextElementSibling.textContent,
+                price: parseFloat(cb.dataset.price),
+              }));
+
+              const totalPrice = services.reduce((sum, s) => sum + s.price, 0);
+
+              const bookingDetails = {
+                salon: document.getElementById("salon-name").textContent,
+                date: bookingDate.value,
+                time: bookingTime.value,
+                services,
+                saloon_id: saloonId,
+                totalPrice,
+              };
+
+              localStorage.setItem(
+                "bookingDetails",
+                JSON.stringify(bookingDetails)
+              );
+              window.location.href = "../confirmpage/confirmpage.html";
+            });
+        });
+      });
+    </script>
+
+    <script src="../nav/nav.js"></script>
+  </body>
+</html>

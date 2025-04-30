@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="/nav/nav.css" />
+    <link rel="stylesheet" href="/bookings/mybookings.css" />
+    <link rel="stylesheet" href="/footer/footer.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <div id="navbar-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="mybookings-container">
+      <section class="bookings-section">
+        <h2>Current Bookings</h2>
+        <div id="current-bookings" class="bookings-list"></div>
+      </section>
+
+      <section class="bookings-section">
+        <h2>Past Bookings</h2>
+        <div id="past-bookings" class="bookings-list"></div>
+      </section>
+    </main>
+
+    <!-- REVIEW MODAL -->
+    <div id="review-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Leave a Review</h3>
+        <form id="review-form">
+          <input type="hidden" name="booking_id" id="review-booking-id" />
+          <label for="rating">Rating (1–5):</label>
+          <input
+            type="number"
+            name="rating"
+            id="rating"
+            min="1"
+            max="5"
+            required
+          />
+          <label for="comment">Comment:</label>
+          <textarea name="comment" id="comment" required></textarea>
+          <button type="submit">Submit Review</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div id="footer-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="/nav/nav.js"></script>
+    <script>
+      // Load navbar and footer
+      fetch("/nav/nav.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("navbar-container").innerHTML = html;
+        });
+
+      fetch("/footer/footer.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("footer-container").innerHTML = html;
+        });
+
+      // Load bookings
+      async function loadBookings() {
+        const res = await fetch(
+          "/mybookings/user-bookings",
+          {
+            credentials: "include",
+          }
+        );
+
+        const data = await res.json();
+        if (data.success) {
+          renderBookings("current-bookings", data.current);
+          renderBookings("past-bookings", data.past, true);
+        } else {
+          alert("❌ Failed to load bookings.");
+        }
+      }
+
+      function renderBookings(containerId, bookings, isPast = false) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        if (!bookings.length) {
+          container.innerHTML = "<p>No bookings found.</p>";
+          return;
+        }
+
+        bookings.forEach((b) => {
+          const datetime = new Date(b.appointment_datetime);
+          const dateStr = datetime.toLocaleDateString();
+          const timeStr = datetime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          const card = document.createElement("div");
+          card.className = "booking-card";
+
+          card.innerHTML = `
+            <div class="card-header" onclick="toggleDetails(this)">
+              <h3>${b.saloon_name}</h3>
+              <span>▼</span>
+            </div>
+            <div class="card-details hidden">
+              <p><strong>Category:</strong> ${b.category}</p>
+              <p><strong>Location:</strong> ${b.location}</p>
+              <p><strong>Date:</strong> ${dateStr}</p>
+              <p><strong>Time:</strong> ${timeStr}</p>
+              <p><strong>Services:</strong> ${b.services}</p>
+              <p><strong>Total Price:</strong> QAR ${b.total_price}</p>
+              ${
+                isPast
+                  ? b.has_review
+                    ? `<button class="reviewed-btn" disabled>&#10003; Reviewed</button>`
+                    : `<button onclick="openReviewModal(${b.booking_id})">Review</button>`
+                  : ""
+              }
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+      }
+
+      function toggleDetails(header) {
+        const details = header.nextElementSibling;
+        details.classList.toggle("hidden");
+      }
+
+      function openReviewModal(bookingId) {
+        document.getElementById("review-booking-id").value = bookingId;
+        document.getElementById("review-modal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("review-modal").style.display = "none";
+        document.getElementById("review-form").reset();
+      }
+
+      // Submit review using JSON
+      document
+        .getElementById("review-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const booking_id = document.getElementById("review-booking-id").value;
+          const rating = document.getElementById("rating").value;
+          const comment = document.getElementById("comment").value;
+
+          console.log("Sending Review:", { booking_id, rating, comment });
+
+          const res = await fetch(
+            "/mybookings/submit-review",
+            {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ booking_id, rating, comment }),
+            }
+          );
+
+          const result = await res.json();
+          if (result.success) {
+            alert("✅ Review submitted successfully!");
+            closeModal();
+            loadBookings();
+          } else {
+            alert("❌ " + (result.message || "Failed to submit review."));
+          }
+        });
+
+      loadBookings();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Favorites</title>
+    <link rel="stylesheet" href="../nav/nav.css" />
+    <link rel="stylesheet" href="favorites.css" />
+    <link rel="stylesheet" href="../footer/footer.css" />
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+    <section class="favorites-page">
+      <h1>Favorites</h1>
+      <div id="favorites-container"></div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script>
+      function formatCategoryTitle(category) {
+        const map = {
+          barbershop: "Barber Shops",
+          nailsalon: "Nail Salons",
+          spa: "Spas",
+          massage: "Massage Centers",
+          skincare: "Skincare Clinics",
+          hairsalon: "Hair Salons",
+          makeup: "Makeup Centers",
+          therapy: "Therapy Centers",
+          hairremoval: "Hair Removal Centers",
+        };
+        return map[category.toLowerCase()] || category + "'s";
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        // Load navbar
+        const navHtml = await fetch("../nav/nav.html").then((res) =>
+          res.text()
+        );
+        document.getElementById("navbar").innerHTML = navHtml;
+
+        // Load footer
+        const footerHtml = await fetch("../footer/footer.html").then((res) =>
+          res.text()
+        );
+        document.getElementById("footer-container").innerHTML = footerHtml;
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "../footer/footer.css";
+        document.head.appendChild(link);
+
+        // Check session
+        const statusRes = await fetch(
+          "/auth/user-status",
+          {
+            credentials: "include",
+          }
+        );
+        const status = await statusRes.json();
+        if (!status.loggedIn) {
+          alert("Please log in to view favorites.");
+          return (window.location.href = "/login/login.html");
+        }
+
+        // Fetch favorites
+        const res = await fetch("/favorites", {
+          credentials: "include",
+        });
+        const favoritesByCategory = await res.json();
+
+        // Fetch ratings
+        const ratingsRes = await fetch(
+          "/reviews/averages"
+        );
+        const ratings = await ratingsRes.json();
+
+        const container = document.getElementById("favorites-container");
+        container.innerHTML = "";
+
+        if (Object.keys(favoritesByCategory).length === 0) {
+          container.innerHTML = "<p>You haven’t added any favorites yet!</p>";
+          return;
+        }
+
+        for (const category in favoritesByCategory) {
+          const section = document.createElement("div");
+          section.className = "category-section";
+
+          section.innerHTML = `<h2>${formatCategoryTitle(
+            category
+          )}</h2><div class="favorites-grid"></div>`;
+          const grid = section.querySelector(".favorites-grid");
+
+          favoritesByCategory[category].forEach((salon) => {
+            const avgRating = ratings[salon.id] || 0;
+
+            const card = document.createElement("div");
+            card.className = "shop-card";
+
+            card.innerHTML = `
+              <a href="../saloons/saloon.html?id=${salon.id}">
+                <img src="${salon.image}" alt="${
+              salon.name
+            }" />
+                <div class="shop-info">
+                  <h3>${salon.name}</h3>
+                  <p><b>📍</b> ${salon.location}</p>
+                  <p><b>📞</b> ${salon.contact}</p>
+                  <p><b>⭐</b> ${parseFloat(avgRating).toFixed(1)} / 5</p>
+                </div>
+              </a>
+              <button onclick="removeFavorite(${
+                salon.id
+              }, this)">Remove</button>
+            `;
+
+            grid.appendChild(card);
+          });
+
+          container.appendChild(section);
+        }
+      });
+
+      function removeFavorite(saloonId, button) {
+        fetch(`/favorites/${saloonId}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              button.closest(".shop-card").remove();
+            } else {
+              alert("Failed to remove favorite.");
+            }
+          });
+      }
+    </script>
+
+    <script src="../nav/nav.js"></script>
+    <script src="../footer/footer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Makeup</title>
+    <link rel="stylesheet" href="../nav/nav.css" />
+    <link rel="stylesheet" href="category.css" />
+    <link rel="stylesheet" href="../footer/footer.css" />
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+    <section class="category-title-section">
+      <div class="category-title">
+        <h1>Makeup Centers</h1>
+      </div>
+    </section>
+
+    <section class="category-grid-section">
+      <div class="category-grid" id="shop-list"></div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Load Navbar
+        const navHtml = await fetch("../nav/nav.html").then((res) =>
+          res.text()
+        );
+        document.getElementById("navbar").innerHTML = navHtml;
+
+        // Load Footer
+        const footerHtml = await fetch("../footer/footer.html").then((res) =>
+          res.text()
+        );
+        document.getElementById("footer-container").innerHTML = footerHtml;
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "../footer/footer.css";
+        document.head.appendChild(link);
+
+        const shopList = document.getElementById("shop-list");
+
+        // Check if user is logged in and fetch favorites
+        let userLoggedIn = false;
+        let favorites = [];
+
+        try {
+          const statusRes = await fetch(
+            "/auth/user-status",
+            {
+              credentials: "include",
+            }
+          );
+          const status = await statusRes.json();
+          userLoggedIn = status.loggedIn;
+
+          if (userLoggedIn) {
+            const favRes = await fetch("/favorites/ids", {
+              credentials: "include",
+            });
+            favorites = await favRes.json();
+          }
+        } catch (err) {
+          console.error("Error loading login/favorites:", err);
+        }
+
+        // Fetch saloons
+        const saloons = await fetch(
+          "/saloons/makeup"
+        ).then((res) => res.json());
+
+        // Fetch ratings
+        const ratings = await fetch(
+          "/reviews/averages"
+        ).then((res) => res.json());
+
+        shopList.innerHTML = "";
+
+        saloons.forEach((shop) => {
+          const avgRating = ratings[shop.id] || 0;
+          const isFav = favorites.includes(shop.id);
+
+          const heart = userLoggedIn
+            ? `<button class="favorite-btn ${isFav ? "active" : ""}" data-id="${
+                shop.id
+              }" onclick="toggleFavorite(event, this)">
+                ${isFav ? "❤️" : "🤍"}
+              </button>`
+            : "";
+
+          shopList.innerHTML += `
+            <div class="shop-card">
+              <a href="../saloons/saloon.html?id=${shop.id}">
+                <img src="${shop.image_path}" alt="${
+            shop.name
+          }" class="shop-image" />
+                <div class="shop-info">
+                  <h3>${shop.name}</h3>
+                  <p><b>📍</b> ${shop.location}</p>
+                  <p><b>📞</b> ${shop.contact}</p>
+                  <p><b>⭐</b> ${parseFloat(avgRating).toFixed(1)} / 5</p>
+                </div>
+              </a>
+              ${heart}
+            </div>
+          `;
+        });
+      });
+
+      async function toggleFavorite(event, button) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const shopId = button.getAttribute("data-id");
+        const isActive = button.classList.contains("active");
+
+        if (isActive) {
+          button.textContent = "🤍";
+          button.classList.remove("active");
+
+          await fetch(`/favorites/${shopId}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+        } else {
+          button.textContent = "❤️";
+          button.classList.add("active");
+
+          await fetch("/favorites", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ saloon_id: shopId }),
+          });
+        }
+      }
+    </script>
+
+    <script src="../nav/nav.js"></script>
+    <script src="../footer/footer.js"></script>
+  </body>
+</html>

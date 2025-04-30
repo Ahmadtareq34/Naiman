@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="confirmpage.css" />
+  </head>
+  <body>
+    <div class="confirmation-container">
+      <h1>Booking Confirmation 🧾</h1>
+
+      <p><strong>Salon:</strong> <span id="salon-name"></span></p>
+      <p><strong>Date:</strong> <span id="booking-date"></span></p>
+      <p><strong>Time:</strong> <span id="booking-time"></span></p>
+      <p><strong>Services:</strong> <span id="services-list"></span></p>
+      <p><strong>Total Price:</strong> <span id="total-price"></span> QAR</p>
+
+      <div class="payment-header">
+        <h2>Payment Details</h2>
+      </div>
+
+      <label for="card-number">Card Number:</label>
+      <input
+        type="text"
+        id="card-number"
+        placeholder="1234567812345678"
+        maxlength="16"
+        required
+      />
+
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" placeholder="123" maxlength="3" required />
+
+      <label for="expiry">Expiry Date (MM/YY):</label>
+      <input
+        type="text"
+        id="expiry"
+        placeholder="08/27"
+        maxlength="5"
+        required
+      />
+
+      <button id="confirm-payment">Confirm Booking & Pay</button>
+
+      <p id="status-message" style="margin-top: 15px"></p>
+    </div>
+
+    <script>
+      let bookingDetails = null;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        bookingDetails = JSON.parse(localStorage.getItem("bookingDetails"));
+
+        if (!bookingDetails) {
+          alert("No booking found.");
+          window.location.href = "/saloons/saloon.html";
+          return;
+        }
+
+        document.getElementById("salon-name").textContent =
+          bookingDetails.salon;
+        document.getElementById("booking-date").textContent =
+          bookingDetails.date;
+        document.getElementById("booking-time").textContent =
+          bookingDetails.time;
+
+        // Show services list and total price
+        const servicesListEl = document.getElementById("services-list");
+        const totalPriceEl = document.getElementById("total-price");
+
+        // Check if services are full objects with label and price
+        if (
+          bookingDetails.services.length &&
+          typeof bookingDetails.services[0] === "object"
+        ) {
+          const serviceListText = bookingDetails.services
+            .map((s) => `${s.label} (${s.price} QAR)`)
+            .join(", ");
+          servicesListEl.textContent = serviceListText;
+
+          const total = bookingDetails.services.reduce(
+            (sum, s) => sum + s.price,
+            0
+          );
+          totalPriceEl.textContent = total.toFixed(2);
+        } else {
+          servicesListEl.textContent = bookingDetails.services.join(", ");
+          totalPriceEl.textContent = bookingDetails.totalPrice;
+        }
+      });
+
+      document
+        .getElementById("confirm-payment")
+        .addEventListener("click", async () => {
+          const card = document.getElementById("card-number").value.trim();
+          const cvv = document.getElementById("cvv").value.trim();
+          const expiry = document.getElementById("expiry").value.trim();
+          const statusMessage = document.getElementById("status-message");
+
+          statusMessage.textContent = "";
+          statusMessage.style.color = "red";
+
+          // Validations
+          if (!/^\d{16}$/.test(card)) {
+            return (statusMessage.textContent =
+              "❌ Card number must be exactly 16 digits.");
+          }
+
+          if (!/^\d{3}$/.test(cvv)) {
+            return (statusMessage.textContent =
+              "❌ CVV must be exactly 3 digits.");
+          }
+
+          const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+          if (!expiryRegex.test(expiry)) {
+            return (statusMessage.textContent =
+              "❌ Expiry must be in MM/YY format (e.g., 08/27).");
+          }
+
+          // Check session
+          const userRes = await fetch(
+            "/auth/user-status",
+            {
+              credentials: "include",
+            }
+          );
+
+          const userData = await userRes.json();
+
+          console.log("User Data:", userData);
+
+          if (!userData.loggedIn) {
+            alert("You must be logged in to confirm a booking.");
+            return (window.location.href = "/login/login.html");
+          }
+
+          // Prepare final datetime
+          const datetime = `${bookingDetails.date} ${bookingDetails.time}:00`;
+
+          // Extract service IDs (in case services are full objects)
+          const serviceIds = bookingDetails.services.map((s) =>
+            typeof s === "object" ? s.id : s
+          );
+
+          console.log("Sending booking:", {
+            user_id: userData.id,
+            saloon_id: bookingDetails.saloon_id,
+            services: serviceIds,
+            appointment_datetime: datetime,
+          });
+
+          // Send to backend
+          const response = await fetch("/bookings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: userData.id,
+              saloon_id: bookingDetails.saloon_id,
+              services: serviceIds,
+              appointment_datetime: datetime,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            statusMessage.style.color = "green";
+            statusMessage.textContent = "✅ Payment & booking confirmed!";
+            localStorage.removeItem("bookingDetails");
+
+            setTimeout(() => {
+              window.location.href = "/home/index.html";
+            }, 2000);
+          } else {
+            statusMessage.textContent = "❌ Error: " + result.error;
+          }
+        });
+    </script>
+  </body>
+</html>

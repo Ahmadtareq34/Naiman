@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="../nav/nav.css" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="../footer/footer.css" />
+  </head>
+  <body>
+    <!-- Navigation bar container -->
+    <div id="navbar"></div>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+      <div class="categories-grid">
+        <!-- Category Icons -->
+        <a
+          href="/categories/barbershop.html"
+          class="category-icon"
+          id="category1"
+        >
+          <div class="icon-image">
+            <img src="/images/barbershop icon.png" alt="Barber Shop Icon" />
+          </div>
+          <p>Barber Shop</p>
+        </a>
+        <a
+          href="/categories/hairsalon.html"
+          class="category-icon"
+          id="category2"
+        >
+          <div class="icon-image">
+            <img src="/images/hairsalon icon.png" alt="Hair Salon Icon" />
+          </div>
+          <p>Hair Salon</p>
+        </a>
+        <a
+          href="/categories/nailsalon.html"
+          class="category-icon"
+          id="category3"
+        >
+          <div class="icon-image">
+            <img src="/images/nailsalon icon.png" alt="Nail Salon Icon" />
+          </div>
+          <p>Nail Salon</p>
+        </a>
+        <a href="/categories/massage.html" class="category-icon" id="category4">
+          <div class="icon-image">
+            <img src="/images/massage icon.png" alt="Massage Icon" />
+          </div>
+          <p>Massage</p>
+        </a>
+        <a href="/categories/makeup.html" class="category-icon" id="category5">
+          <div class="icon-image">
+            <img src="/images/makeup icon.png" alt="Makeup Icon" />
+          </div>
+          <p>Makeup</p>
+        </a>
+        <a
+          href="/categories/hairremoval.html"
+          class="category-icon"
+          id="category6"
+        >
+          <div class="icon-image">
+            <img src="/images/hairremoval icon.png" alt="Hair Removal Icon" />
+          </div>
+          <p>Hair Removal</p>
+        </a>
+        <a
+          href="/categories/skincare.html"
+          class="category-icon"
+          id="category7"
+        >
+          <div class="icon-image">
+            <img src="/images/skincare icon.png" alt="Skin Care Icon" />
+          </div>
+          <p>Skin Care</p>
+        </a>
+        <a href="/categories/spa.html" class="category-icon" id="category8">
+          <div class="icon-image">
+            <img src="/images/spa icon.png" alt="Spa Icon" />
+          </div>
+          <p>Spa</p>
+        </a>
+        <a href="/categories/therapy.html" class="category-icon" id="category9">
+          <div class="icon-image">
+            <img src="/images/therapy icon.png" alt="Therapy Icon" />
+          </div>
+          <p>Therapy</p>
+        </a>
+      </div>
+    </section>
+
+    <div class="courses-section">
+      <!-- Title for the Courses Section -->
+      <h1 class="courses-title">Courses</h1>
+
+      <!-- Course 1 -->
+      <a href="/courses/cosmetology.html" class="course-card">
+        <img
+          src="/images/courses/Cosmetology Course.png"
+          alt="Cosmetology Image"
+          class="course-image"
+        />
+        <div class="course-info">
+          <h2>Cosmetology</h2>
+          <p>
+            A cosmetology course teaches students the art and science of beauty
+            care, including hair styling, skin care, makeup application, and
+            nail services. It provides both theoretical knowledge and practical
+            skills to prepare individuals for careers in the beauty and wellness
+            industry.
+          </p>
+        </div>
+        <span class="course-arrow">➡</span>
+      </a>
+
+      <!-- Course 2 -->
+      <a href="/courses/nailtechnician.html" class="course-card">
+        <img
+          src="/images/courses/Nail Technician Course.png"
+          alt="Nail Technician Image"
+          class="course-image"
+        />
+        <div class="course-info">
+          <h2>Nail Technician</h2>
+          <p>
+            A nail technician course focuses on the care and enhancement of
+            nails, teaching skills such as manicures, pedicures, nail art, and
+            artificial nail application. It combines practical training with
+            knowledge of hygiene and safety standards, preparing students for
+            certification and careers in the nail care industry.
+          </p>
+        </div>
+        <span class="course-arrow">➡</span>
+      </a>
+
+      <!-- Course 3 -->
+      <a href="/courses/skincare.html" class="course-card">
+        <img
+          src="/images/courses/Skincare Course.png"
+          alt="Skincare Image"
+          class="course-image"
+        />
+        <div class="course-info">
+          <h2>Skincare</h2>
+          <p>
+            A skincare course teaches techniques for maintaining and improving
+            skin health, including facials, exfoliation, and treatments for
+            various skin conditions. It provides both theoretical knowledge and
+            hands-on training to prepare students for careers in esthetics and
+            professional certification.
+          </p>
+        </div>
+        <span class="course-arrow">➡</span>
+      </a>
+    </div>
+
+    <!-- Footer container -->
+    <div id="footer-container"></div>
+
+    <!-- JavaScript for loading navigation bar -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("../nav/nav.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("navbar").innerHTML = data;
+          });
+      });
+    </script>
+
+    <!-- JavaScript for navigation functionality -->
+    <script src="../nav/nav.js"></script>
+
+    <!-- JavaScript for loading footer -->
+    <script src="../footer/footer.js"></script>
+  </body>
+</html>

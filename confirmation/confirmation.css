@@ -1,0 +1,118 @@
+/* Base Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: maroon;
+  margin: 0;
+  padding: 10px 0;
+}
+
+/* Container */
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Card */
+.confirmation-card {
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.confirmation-card h2 {
+  color: maroon;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.confirmation-card h3 {
+  color: #444;
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+/* Paragraphs */
+.confirmation-card p {
+  font-size: 16px;
+  color: #333;
+  margin: 10px 0;
+}
+
+/* Program List */
+#program-list {
+  padding-left: 20px;
+  margin: 0 0 10px;
+}
+
+#program-list li {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+/* Payment Labels and Inputs */
+.confirmation-card label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444;
+}
+
+.confirmation-card input[type="text"],
+.confirmation-card input[type="month"] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Confirm Button */
+.confirmation-card button {
+  margin-top: 25px;
+  background-color: maroon;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.confirmation-card button:hover {
+  background-color: #990000;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .confirmation-card {
+    padding: 25px 20px;
+  }
+
+  .confirmation-card h2 {
+    font-size: 20px;
+  }
+
+  .confirmation-card h3 {
+    font-size: 18px;
+  }
+
+  .confirmation-card p,
+  .confirmation-card label {
+    font-size: 14px;
+  }
+
+  #program-list li {
+    font-size: 14px;
+  }
+}

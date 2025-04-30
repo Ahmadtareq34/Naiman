@@ -1,0 +1,136 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: black; 
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    display: flex;
+    width: 80%;
+    height: 80vh;
+    background-color: black;
+}
+
+/* Left Side (Logo) */
+.login-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 70%; 
+    cursor: pointer;
+}
+
+/* Right Side (Admin Login Form) */
+.login-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+
+.login-box {
+    background-color: white;
+    padding: 40px;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-box h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: black; 
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.input-container {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-container label {
+    display: block;
+    font-size: 14px;
+    color: black; 
+    margin-bottom: 5px;
+}
+
+.input-container input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+}
+
+/* Password Field with Eye Icon */
+.password-field {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 40px; 
+    cursor: pointer;
+    fill: #333;
+}
+
+.eye-icon.active {
+    fill: black;
+}
+
+/* Login Button */
+.login-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.login-btn:hover {
+    background-color: #333;
+}
+
+/* Remember Me Checkbox */
+.remember-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.remember-container input {
+    margin-right: 10px;
+}

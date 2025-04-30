@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <div class="admin-header">
+      <h1>Admin Dashboard</h1>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <section class="admin-metrics">
+      <div class="metric-box">
+        <h2>Total Salons</h2>
+        <p id="total-salons">0</p>
+      </div>
+      <div class="metric-box">
+        <h2>Total Reviews</h2>
+        <p id="total-reviews">0</p>
+      </div>
+    </section>
+
+    <section class="add-salon-form">
+      <h2>Add New Salon</h2>
+      <form id="salonForm" enctype="multipart/form-data">
+        <label>Salon Name:</label>
+        <input type="text" name="name" required />
+
+        <label>Category:</label>
+        <select name="category" required>
+          <option value="">Select Category</option>
+          <option value="barbershop">Barber Shop</option>
+          <option value="hairremoval">Hair Removal</option>
+          <option value="hairsalon">Hair Salon</option>
+          <option value="makeup">Makeup</option>
+          <option value="massage">Massage</option>
+          <option value="nailsalon">Nail Salon</option>
+          <option value="skincare">Skincare</option>
+          <option value="spa">Spa</option>
+          <option value="therapy">Therapy</option>
+        </select>
+
+        <label>Location:</label>
+        <input type="text" name="location" required />
+
+        <label>Contact:</label>
+        <div class="contact-field">
+          <span>+974</span>
+          <input
+            type="text"
+            name="contact"
+            id="contact"
+            maxlength="9"
+            required
+          />
+        </div>
+
+        <label>Description:</label>
+        <textarea name="description" rows="3" required></textarea>
+
+        <label>Salon Image:</label>
+        <input type="file" name="image" accept="image/*" required />
+
+        <div id="services-container">
+          <h3>Services (Max 5)</h3>
+          <div class="service-row">
+            <input
+              type="text"
+              name="service_name[]"
+              placeholder="Service name"
+              required
+            />
+            <input
+              type="number"
+              name="service_price[]"
+              placeholder="Price"
+              required
+            />
+            <button type="button" onclick="removeServiceField(this)">X</button>
+          </div>
+        </div>
+
+        <button type="button" onclick="addServiceField()">
+          Add Another Service
+        </button>
+        <button type="submit">Add Salon</button>
+        <p id="response-msg" class="message"></p>
+      </form>
+    </section>
+
+    <script>
+      async function loadMetrics() {
+        const res = await fetch("/admin/metrics");
+        const data = await res.json();
+        document.getElementById("total-salons").textContent = data.totalSalons;
+        document.getElementById("total-reviews").textContent =
+          data.totalReviews;
+      }
+      loadMetrics();
+
+      // Format contact as XXXX XXXX
+      const contactInput = document.getElementById("contact");
+      contactInput.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, "").slice(0, 8);
+        if (value.length > 4) {
+          value = value.slice(0, 4) + " " + value.slice(4);
+        }
+        this.value = value;
+      });
+
+      // Submit form
+      document
+        .getElementById("salonForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const form = e.target;
+          const formData = new FormData(form);
+
+          // Format contact
+          const rawContact = form
+            .querySelector('input[name="contact"]')
+            .value.replace(/\s+/g, "");
+          if (rawContact.length !== 8) {
+            alert("Phone number must be 8 digits.");
+            return;
+          }
+          const formattedContact = `+974 ${rawContact.slice(
+            0,
+            4
+          )} ${rawContact.slice(4)}`;
+          formData.set("contact", formattedContact);
+
+          // Get services
+          const serviceNames = Array.from(
+            form.querySelectorAll('input[name="service_name[]"]')
+          ).map((i) => i.value.trim());
+          const servicePrices = Array.from(
+            form.querySelectorAll('input[name="service_price[]"]')
+          ).map((i) => i.value.trim());
+
+          const services = [];
+          for (let i = 0; i < serviceNames.length; i++) {
+            if (serviceNames[i] && servicePrices[i]) {
+              services.push({
+                name: serviceNames[i],
+                price: parseFloat(servicePrices[i]),
+              });
+            }
+          }
+
+          formData.append("services", JSON.stringify(services));
+
+          const response = await fetch(
+            "/admin/add-salon",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          const result = await response.json();
+          const msg = document.getElementById("response-msg");
+
+          if (result.success) {
+            msg.classList.remove("error");
+            msg.classList.add("success");
+            msg.textContent = "✅ Salon added successfully!";
+
+            // Reset form immediately
+            form.reset();
+            document.getElementById("services-container").innerHTML = `
+            <h3>Services (Max 5)</h3>
+            <div class="service-row">
+              <input type="text" name="service_name[]" placeholder="Service name" required />
+              <input type="number" name="service_price[]" placeholder="Price" required />
+              <button type="button" onclick="removeServiceField(this)">X</button>
+            </div>`;
+
+            loadMetrics();
+
+            // Keep message visible for 3 seconds
+            setTimeout(() => {
+              msg.textContent = "";
+              msg.classList.remove("success");
+            }, 3000);
+          } else {
+            msg.classList.remove("success");
+            msg.classList.add("error");
+            msg.textContent =
+              "❌ " + (result.message || "Failed to add salon.");
+          }
+        });
+
+      function addServiceField() {
+        const container = document.getElementById("services-container");
+        const rows = container.querySelectorAll(".service-row");
+        if (rows.length >= 5) {
+          alert("Maximum 5 services allowed.");
+          return;
+        }
+        const div = document.createElement("div");
+        div.className = "service-row";
+        div.innerHTML = `
+          <input type="text" name="service_name[]" placeholder="Service name" required />
+          <input type="number" name="service_price[]" placeholder="Price" required />
+          <button type="button" onclick="removeServiceField(this)">X</button>
+        `;
+        container.appendChild(div);
+      }
+
+      function removeServiceField(btn) {
+        const row = btn.closest(".service-row");
+        row.remove();
+      }
+
+      function logout() {
+        fetch("/admin/logout", {
+          method: "POST",
+          credentials: "include",
+        }).then(() => {
+          window.location.href = "/home/index.html";
+        });
+      }
+    </script>
+  </body>
+</html>

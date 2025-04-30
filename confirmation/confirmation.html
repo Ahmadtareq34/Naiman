@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Confirmation</title>
+    <link rel="stylesheet" href="confirmation.css" />
+  </head>
+  <body>
+    <div class="confirmation-container">
+      <div class="confirmation-card">
+        <h2>🎓 Course Booking Summary</h2>
+        <p><strong>Course:</strong> <span id="course-name"></span></p>
+        <p><strong>Start Date:</strong> <span id="course-date"></span></p>
+        <p><strong>Selected Programs:</strong></p>
+        <ul id="program-list"></ul>
+        <p><strong>Total Cost:</strong> QAR <span id="total-cost"></span></p>
+
+        <hr />
+
+        <h3>💳 Payment Details</h3>
+        <label for="card-number">Card Number:</label>
+        <input
+          type="text"
+          id="card-number"
+          maxlength="16"
+          placeholder="1234 5678 9012 3456"
+          required
+        />
+
+        <label for="expiry">Expiry Date:</label>
+        <input type="month" id="expiry" required />
+
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" maxlength="3" placeholder="123" required />
+
+        <button onclick="confirmBooking()">Confirm Booking</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const data = JSON.parse(localStorage.getItem("selectedCourse"));
+        if (!data) return;
+
+        document.getElementById("course-name").textContent = data.courseName;
+        document.getElementById(
+          "course-date"
+        ).textContent = `${data.month} ${data.year}`;
+        document.getElementById("total-cost").textContent =
+          data.totalCost || "0";
+
+        const programList = document.getElementById("program-list");
+        if (data.selectedPrograms && data.selectedPrograms.length > 0) {
+          data.selectedPrograms.forEach((program) => {
+            const li = document.createElement("li");
+            li.textContent = program;
+            programList.appendChild(li);
+          });
+        } else {
+          programList.innerHTML = "<li>No programs selected.</li>";
+        }
+      });
+
+      function confirmBooking() {
+        const card = document.getElementById("card-number").value.trim();
+        const cvv = document.getElementById("cvv").value.trim();
+        const expiry = document.getElementById("expiry").value;
+
+        if (!/^\d{16}$/.test(card)) {
+          return alert("Enter a valid 16-digit card number.");
+        }
+        if (!/^\d{3}$/.test(cvv)) {
+          return alert("Enter a valid 3-digit CVV.");
+        }
+        if (!expiry) {
+          return alert("Please enter the card's expiry date.");
+        }
+
+        alert("✅ Booking successful! Thank you.");
+        window.location.href = "/home/index.html";
+      }
+    </script>
+  </body>
+</html>

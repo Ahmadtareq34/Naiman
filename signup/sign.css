@@ -1,0 +1,258 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: maroon;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-container {
+    display: flex;
+    width: 80%;
+    height: 80vh;
+    background-color: maroon;
+}
+
+/* Left Side (Logo) */
+.signup-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 70%;
+    cursor: pointer;
+}
+
+/* Right Side (Sign-Up Form) */
+.error-tab {
+    color: red;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+    list-style-type: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.signup-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: maroon;
+}
+
+.signup-box {
+    background-color: white;
+    padding: 40px;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.signup-box h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: maroon;
+    margin-bottom: 10px;
+}
+
+.signup-box p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Name Fields Side by Side */
+.name-fields {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.input-container {
+    flex: 1;
+    margin-right: 10px;
+    text-align: left;
+}
+
+.input-container:last-child {
+    margin-right: 0;
+}
+
+.input-container label {
+    display: block;
+    font-size: 14px;
+    color: maroon;
+    margin-bottom: 5px;
+}
+
+.input-container input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+}
+
+/* Password Field with Eye Icon */
+.password-field {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    cursor: pointer;
+    fill: #333;
+}
+
+.eye-icon.active {
+    fill: maroon;
+}
+
+/* Terms and Services Section */
+.terms-container {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.terms-container input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.terms-container a {
+    color: maroon;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.terms-container a:hover {
+    text-decoration: underline;
+}
+
+/* Terms Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 600px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    line-height: 1.6;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: maroon;
+}
+
+.modal-content ul {
+    margin-top: 10px;
+    padding-left: 20px;
+    color: #444;
+    font-size: 15px;
+}
+
+.modal-content ul li {
+    margin-bottom: 10px;
+}
+
+.modal .close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    color: #aaa;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal .close:hover {
+    color: #000;
+}
+
+/* Sign-Up Button */
+.signup-btn {
+    background-color: maroon;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.signup-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Remember Me Checkbox */
+.remember-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.remember-container input {
+    margin-right: 10px;
+}
+
+/* Admin Link Styling */
+.admin-link {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.admin-link a {
+    color: maroon;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.admin-link a:hover {
+    color: #cc0000;
+}

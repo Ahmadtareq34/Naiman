@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    background-color: maroon;
+    padding-top: 10px;
+  }
+  
+  .confirmation-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px 55px 30px 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .confirmation-container h1,
+  .confirmation-container h2 {
+    color: maroon;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .confirmation-container p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .payment-header {
+    border-top: 3px solid maroon;
+    padding-top: 15px;
+    margin-top: 30px;
+  }  
+  
+  label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="month"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    background-color: maroon;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-left: 10px;
+  }
+  
+  button:hover {
+    background-color: #a00000;
+  }
+  
+  #status-message {
+    font-weight: bold;
+    text-align: center;
+  }
+  

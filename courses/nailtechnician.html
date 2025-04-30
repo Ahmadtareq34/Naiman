@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nail Technician Course</title>
+    <link rel="stylesheet" href="../nav/nav.css" />
+    <link rel="stylesheet" href="courses.css" />
+    <link rel="stylesheet" href="../footer/footer.css" />
+  </head>
+  <body>
+    <!-- Navigation bar container -->
+    <div id="navbar"></div>
+
+    <!-- Main Content Section -->
+    <div class="main-container">
+      <!-- Left Section -->
+      <div class="course-details">
+        <img
+          src="/images/courses/Nail Technician Course.png"
+          alt="Nail Technician Course"
+          class="course-image"
+        />
+        <h2>Course Overview</h2>
+        <p>
+          The Nail Technician course provides students with essential knowledge
+          and hands-on skills in manicures, pedicures, nail art, and artificial
+          nail application. Gain expertise to become a certified nail technician
+          in the beauty industry.
+        </p>
+        <h2>Reviews</h2>
+        <textarea
+          id="review-box"
+          placeholder="Write your review here..."
+        ></textarea>
+        <div class="rating">
+          <label for="rating">Rate Us:</label>
+          <select id="rating">
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+        </div>
+        <button id="submit-review" class="submit-button">Submit Review</button>
+      </div>
+
+      <!-- Right Section - Booking Section -->
+      <div class="booking-section">
+        <h2>Programs Offered</h2>
+        <ul class="programs-list">
+          <li>
+            <input type="checkbox" id="basic-manicure" data-price="1200" />
+            <label for="basic-manicure">Basic Manicure - 1200 QR</label>
+          </li>
+          <li>
+            <input type="checkbox" id="pedicure-skills" data-price="1500" />
+            <label for="pedicure-skills"
+              >Advanced Pedicure Skills - 1500 QR</label
+            >
+          </li>
+          <li>
+            <input type="checkbox" id="nail-art-design" data-price="1800" />
+            <label for="nail-art-design">Nail Art and Design - 1800 QR</label>
+          </li>
+          <li>
+            <input type="checkbox" id="artificial-nails" data-price="2000" />
+            <label for="artificial-nails"
+              >Artificial Nails Application - 2000 QR</label
+            >
+          </li>
+        </ul>
+
+        <h2>Select Start Date</h2>
+        <label for="course-month">Month:</label>
+        <select id="course-month">
+          <option value="">-- Select Month --</option>
+          <option value="January">January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+
+        <label for="course-year">Year:</label>
+        <select id="course-year">
+          <option value="">-- Select Year --</option>
+        </select>
+
+        <h2>Location & Contact</h2>
+        <p>
+          <span class="location-pin">📍</span> Doha, Al Sadd, Suhaim Bin Hamad
+          Street
+        </p>
+        <p>Contact: 234-567-8901</p>
+
+        <button id="book-now" class="book-button">Book Now</button>
+      </div>
+    </div>
+
+    <!-- Footer container -->
+    <div id="footer-container"></div>
+
+    <!-- JavaScript for navbar/footer -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("../nav/nav.html")
+          .then((res) => res.text())
+          .then((data) => (document.getElementById("navbar").innerHTML = data));
+
+        fetch("../footer/footer.html")
+          .then((res) => res.text())
+          .then(
+            (data) =>
+              (document.getElementById("footer-container").innerHTML = data)
+          );
+
+        // Populate year dropdown
+        const currentYear = new Date().getFullYear();
+        const yearSelect = document.getElementById("course-year");
+        for (let i = 0; i < 5; i++) {
+          const option = document.createElement("option");
+          option.value = currentYear + i;
+          option.textContent = currentYear + i;
+          yearSelect.appendChild(option);
+        }
+
+        // Booking button functionality
+        document
+          .getElementById("book-now")
+          .addEventListener("click", function () {
+            // Check if user is logged in
+            fetch("/auth/user-status", {
+              method: "GET",
+              credentials: "include",
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (!data.loggedIn) {
+                  window.location.href = "../login/login.html";
+                  return;
+                }
+
+                // Proceed with booking if logged in
+                const month = document.getElementById("course-month").value;
+                const year = document.getElementById("course-year").value;
+
+                const selectedPrograms = Array.from(
+                  document.querySelectorAll(
+                    ".programs-list input[type='checkbox']:checked"
+                  )
+                );
+
+                if (!month || !year) {
+                  alert("Please select a month and year.");
+                  return;
+                }
+
+                if (selectedPrograms.length === 0) {
+                  alert("Please select at least one program.");
+                  return;
+                }
+
+                const selectedProgramNames = selectedPrograms.map((cb) => {
+                  const label = cb.nextElementSibling.textContent;
+                  return label;
+                });
+
+                const totalCost = selectedPrograms.reduce(
+                  (sum, cb) => sum + parseFloat(cb.dataset.price),
+                  0
+                );
+
+                const courseInfo = {
+                  courseName: document.title,
+                  month,
+                  year,
+                  selectedPrograms: selectedProgramNames,
+                  totalCost,
+                };
+
+                localStorage.setItem(
+                  "selectedCourse",
+                  JSON.stringify(courseInfo)
+                );
+                window.location.href = "../confirmation/confirmation.html";
+              })
+              .catch((err) => {
+                console.error("Error checking login status:", err);
+                alert("Something went wrong. Please try again.");
+              });
+          });
+      });
+    </script>
+
+    <!-- Other scripts -->
+    <script src="courses.js"></script>
+    <script src="../nav/nav.js"></script>
+    <script src="../footer/footer.js"></script>
+  </body>
+</html>
