@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recommended Saloons</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="../nav/nav.css" />
     <link rel="stylesheet" href="recommended.css" />
     <link rel="stylesheet" href="../footer/footer.css" />
@@ -50,17 +56,14 @@
         let loggedIn = false;
 
         try {
-          const userRes = await fetch(
-            "/auth/user-status",
-            {
-              credentials: "include",
-            }
-          );
+          const userRes = await fetch(`${BASE_URL}/auth/user-status`, {
+            credentials: "include",
+          });
           const user = await userRes.json();
           loggedIn = user.loggedIn;
 
           if (loggedIn) {
-            const favRes = await fetch("/favorites/ids", {
+            const favRes = await fetch(`${BASE_URL}/favorites/ids`, {
               credentials: "include",
             });
             favorites = await favRes.json();
@@ -69,7 +72,7 @@
           console.warn("User not logged in or error fetching favorites.");
         }
 
-        const res = await fetch("/recommended");
+        const res = await fetch(`${BASE_URL}/recommended`);
         const recommended = await res.json();
 
         const container = document.getElementById("recommended-container");
@@ -102,9 +105,7 @@
 
               card.innerHTML = `
                 <a href="../saloons/saloon.html?id=${salon.id}">
-                  <img src="${salon.image_path}" alt="${
-                salon.name
-              }" />
+                  <img src="${salon.image_path}" alt="${salon.name}" />
                   <div class="shop-info">
                     <h3>${salon.name}</h3>
                     <p><b>📍</b> ${salon.location}</p>
@@ -142,7 +143,7 @@
           button.textContent = "🤍";
           button.classList.remove("active");
 
-          await fetch(`/favorites/${shopId}`, {
+          await fetch(`${BASE_URL}/favorites/${shopId}`, {
             method: "DELETE",
             credentials: "include",
           });
@@ -150,7 +151,7 @@
           button.textContent = "❤️";
           button.classList.add("active");
 
-          await fetch("/favorites", {
+          await fetch(`${BASE_URL}/favorites`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

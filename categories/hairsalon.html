@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hair Salon</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="../nav/nav.css" />
     <link rel="stylesheet" href="category.css" />
     <link rel="stylesheet" href="../footer/footer.css" />
@@ -48,17 +54,14 @@
         let favorites = [];
 
         try {
-          const statusRes = await fetch(
-            "/auth/user-status",
-            {
-              credentials: "include",
-            }
-          );
+          const statusRes = await fetch(`${BASE_URL}/auth/user-status`, {
+            credentials: "include",
+          });
           const status = await statusRes.json();
           userLoggedIn = status.loggedIn;
 
           if (userLoggedIn) {
-            const favRes = await fetch("/favorites/ids", {
+            const favRes = await fetch(`${BASE_URL}/favorites/ids`, {
               credentials: "include",
             });
             favorites = await favRes.json();
@@ -68,14 +71,14 @@
         }
 
         // Fetch saloons
-        const saloons = await fetch(
-          "/saloons/hairsalon"
-        ).then((res) => res.json());
+        const saloons = await fetch(`${BASE_URL}/saloons/hairsalon`).then(
+          (res) => res.json()
+        );
 
         // Fetch ratings
-        const ratings = await fetch(
-          "/reviews/averages"
-        ).then((res) => res.json());
+        const ratings = await fetch(`${BASE_URL}/reviews/averages`).then(
+          (res) => res.json()
+        );
 
         shopList.innerHTML = "";
 
@@ -121,7 +124,7 @@
           button.textContent = "🤍";
           button.classList.remove("active");
 
-          await fetch(`/favorites/${shopId}`, {
+          await fetch(`${BASE_URL}/favorites/${shopId}`, {
             method: "DELETE",
             credentials: "include",
           });
@@ -129,7 +132,7 @@
           button.textContent = "❤️";
           button.classList.add("active");
 
-          await fetch("/favorites", {
+          await fetch(`${BASE_URL}/favorites`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

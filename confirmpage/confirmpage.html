@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Booking Confirmation</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="confirmpage.css" />
   </head>
   <body>
@@ -119,12 +125,9 @@
           }
 
           // Check session
-          const userRes = await fetch(
-            "/auth/user-status",
-            {
-              credentials: "include",
-            }
-          );
+          const userRes = await fetch(`${BASE_URL}/auth/user-status`, {
+            credentials: "include",
+          });
 
           const userData = await userRes.json();
 
@@ -151,7 +154,7 @@
           });
 
           // Send to backend
-          const response = await fetch("/bookings", {
+          const response = await fetch(`${BASE_URL}/bookings`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -1,3 +1,7 @@
+const BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:3000"
+  : "https://naiman.onrender.com";
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded. Initializing navigation...");
 
@@ -25,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Check session
-    fetch("/auth/user-status", {
+    fetch(`${BASE_URL}/auth/user-status`, {
       method: "GET",
       credentials: "include",
     })
@@ -69,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Logout
     logoutButton.addEventListener("click", () => {
-      fetch("/auth/logout", {
+      fetch(`${BASE_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       })

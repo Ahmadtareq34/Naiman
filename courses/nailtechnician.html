@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nail Technician Course</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="../nav/nav.css" />
     <link rel="stylesheet" href="courses.css" />
     <link rel="stylesheet" href="../footer/footer.css" />
@@ -138,7 +144,7 @@
           .getElementById("book-now")
           .addEventListener("click", function () {
             // Check if user is logged in
-            fetch("/auth/user-status", {
+            fetch(`${BASE_URL}/auth/user-status`, {
               method: "GET",
               credentials: "include",
             })

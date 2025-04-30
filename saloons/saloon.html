@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Salon Details</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="../saloons/saloon.css" />
   </head>
   <body>
@@ -69,19 +75,17 @@
         bookingDate.min = new Date().toISOString().split("T")[0];
 
         // Fetch salon details and services
-        fetch(`/saloons/details/${saloonId}`)
+        fetch(`${BASE_URL}/saloons/details/${saloonId}`)
           .then((res) => res.json())
           .then((salon) => {
-            document.getElementById(
-              "salon-image"
-            ).src = `${salon.image_path}`;
+            document.getElementById("salon-image").src = `${salon.image_path}`;
             document.getElementById("salon-name").textContent = salon.name;
             document.getElementById("salon-location").textContent =
               salon.location;
             document.getElementById("salon-contact").textContent =
               salon.contact;
 
-            return fetch(`/saloons/${saloonId}/services`);
+            return fetch(`${BASE_URL}/saloons/${saloonId}/services`);
           })
           .then((res) => res.json())
           .then((services) => {
@@ -99,7 +103,7 @@
           .catch((error) => console.error("Error fetching services:", error));
 
         // Fetch and display reviews
-        fetch(`/reviews/${saloonId}`)
+        fetch(`${BASE_URL}/reviews/${saloonId}`)
           .then((res) => res.json())
           .then((reviews) => {
             const list = document.getElementById("reviews-list");
@@ -135,7 +139,7 @@
           const duration = checkedCount * 30;
 
           fetch(
-            `/bookings/unavailable?saloon_id=${saloonId}&date=${bookingDate.value}`
+            `${BASE_URL}/bookings/unavailable?saloon_id=${saloonId}&date=${bookingDate.value}`
           )
             .then((res) => res.json())
             .then((bookedSlots) => {
@@ -198,7 +202,7 @@
         });
 
         document.getElementById("book-now").addEventListener("click", () => {
-          fetch("/auth/user-status", {
+          fetch(`${BASE_URL}/auth/user-status`, {
             credentials: "include",
           })
             .then((res) => res.json())

@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Login</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="adminlogin.css" />
   </head>
   <body>
@@ -103,7 +109,7 @@
           }
 
           try {
-            const res = await fetch("/admin/login", {
+            const res = await fetch(`${BASE_URL}/admin/login`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="admin.css" />
   </head>
   <body>
@@ -93,7 +99,7 @@
 
     <script>
       async function loadMetrics() {
-        const res = await fetch("/admin/metrics");
+        const res = await fetch(`${BASE_URL}/admin/metrics`);
         const data = await res.json();
         document.getElementById("total-salons").textContent = data.totalSalons;
         document.getElementById("total-reviews").textContent =
@@ -153,13 +159,10 @@
 
           formData.append("services", JSON.stringify(services));
 
-          const response = await fetch(
-            "/admin/add-salon",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
+          const response = await fetch(`${BASE_URL}/admin/add-salon`, {
+            method: "POST",
+            body: formData,
+          });
 
           const result = await response.json();
           const msg = document.getElementById("response-msg");
@@ -217,7 +220,7 @@
       }
 
       function logout() {
-        fetch("/admin/logout", {
+        fetch(`${BASE_URL}/admin/logout`, {
           method: "POST",
           credentials: "include",
         }).then(() => {

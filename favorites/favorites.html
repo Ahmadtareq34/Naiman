@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Favorites</title>
+    <script>
+      const BASE_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : "https://naiman.onrender.com";
+    </script>
     <link rel="stylesheet" href="../nav/nav.css" />
     <link rel="stylesheet" href="favorites.css" />
     <link rel="stylesheet" href="../footer/footer.css" />
@@ -52,12 +58,9 @@
         document.head.appendChild(link);
 
         // Check session
-        const statusRes = await fetch(
-          "/auth/user-status",
-          {
-            credentials: "include",
-          }
-        );
+        const statusRes = await fetch(`${BASE_URL}/auth/user-status`, {
+          credentials: "include",
+        });
         const status = await statusRes.json();
         if (!status.loggedIn) {
           alert("Please log in to view favorites.");
@@ -65,15 +68,13 @@
         }
 
         // Fetch favorites
-        const res = await fetch("/favorites", {
+        const res = await fetch(`${BASE_URL}/favorites`, {
           credentials: "include",
         });
         const favoritesByCategory = await res.json();
 
         // Fetch ratings
-        const ratingsRes = await fetch(
-          "/reviews/averages"
-        );
+        const ratingsRes = await fetch(`${BASE_URL}/reviews/averages`);
         const ratings = await ratingsRes.json();
 
         const container = document.getElementById("favorites-container");
@@ -101,9 +102,7 @@
 
             card.innerHTML = `
               <a href="../saloons/saloon.html?id=${salon.id}">
-                <img src="${salon.image}" alt="${
-              salon.name
-            }" />
+                <img src="${salon.image}" alt="${salon.name}" />
                 <div class="shop-info">
                   <h3>${salon.name}</h3>
                   <p><b>📍</b> ${salon.location}</p>
@@ -124,7 +123,7 @@
       });
 
       function removeFavorite(saloonId, button) {
-        fetch(`/favorites/${saloonId}`, {
+        fetch(`${BASE_URL}/favorites/${saloonId}`, {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           credentials: "include",

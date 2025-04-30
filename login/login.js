@@ -1,3 +1,7 @@
+const BASE_URL = window.location.hostname === "localhost"
+  ? "http://localhost:3000"
+  : "https://naiman.onrender.com";
+
 // Add a submit event listener to the login form
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -12,7 +16,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
   try {
         // Send a POST request to the login endpoint
-    const response = await fetch('/auth/login', {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
