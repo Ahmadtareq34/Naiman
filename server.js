@@ -23,18 +23,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({
-  origin: ["https://naiman.netlify.app"],
-  credentials: true
-}));
-
-app.use(express.static(__dirname));
-
-// Serve static images
-app.use("/images", express.static(path.join(__dirname, "images")));
-
 // Session Configuration
 app.use(
   session({
@@ -49,6 +37,22 @@ app.use(
     },
   })
 );
+
+// CORS
+app.use(cors({
+  origin: ["https://naiman.netlify.app"],
+  credentials: true
+}));
+
+// Body Parsers
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(__dirname));
+
+// Serve static images
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 
 // Use Routes
 app.use("/auth", authRoutes);
