@@ -26,7 +26,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-  origin: "https://naiman.netlify.app",
+  origin: process.env.CLIENT_URL || "http://localhost:5500",
   credentials: true
 }));
 
