@@ -30,8 +30,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true,                 
-      sameSite: "none",              
+      secure: false,                               
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -40,7 +39,7 @@ app.use(
 
 // CORS
 app.use(cors({
-  origin: ["https://naiman.netlify.app"],
+  origin: process.env.CLIENT_URL || "http://localhost:5500",
   credentials: true
 }));
 
