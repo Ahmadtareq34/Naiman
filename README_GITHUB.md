@@ -1,6 +1,6 @@
 # 💈 Naiman – Self-Care Booking Platform
 
-Naiman is a comprehensive self-care & wellness service booking platform designed to simplify the process of discovering, favoriting, and booking appointments at various self-care venues such as barbershops, nail salons, skincare centers, spas, and more. The platform includes both user-facing and admin functionalities, enabling customers to schedule services and business owners to manage offerings and bookings.
+Naiman is a comprehensive self-care & wellness service booking platform designed to simplify the process of discovering, favoriting, and booking appointments at various self-care venues such as barbershops, nail salons, skincare centers, spas, and more, in Qatar. The platform includes both user-facing and admin functionalities, enabling customers to schedule services and business owners to manage offerings and bookings.
 
 ---
 
