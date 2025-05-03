@@ -69,9 +69,11 @@ To run this project locally:
 
 ## 🚀 Deployed Version
 
-The Naiman platform is live on FireFox browser (due to some cookie security issues with other browsers):
+The Naiman platform is live on:
 
 - **Frontend:** [https://naiman.netlify.app](https://naiman.netlify.app)
 - **Backend API:** [https://naiman.onrender.com](https://naiman.onrender.com)
 
 ---
+
+> Note: Only use **Firefox** to test all features as Chrome blocks some cookies due to secure context requirements.
