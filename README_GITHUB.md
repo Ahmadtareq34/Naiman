@@ -1,6 +1,6 @@
 # 💈 Naiman – Self-Care Booking Platform
 
-Naiman is a comprehensive self-care service booking platform designed to simplify the process of discovering, favoriting, and booking appointments at various self-care venues such as barbershops, nail salons, skincare centers, spas, and more. The platform includes both user-facing and admin functionalities, enabling customers to schedule services and business owners to manage offerings and bookings.
+Naiman is a comprehensive self-care & wellness service booking platform designed to simplify the process of discovering, favoriting, and booking appointments at various self-care venues such as barbershops, nail salons, skincare centers, spas, and more. The platform includes both user-facing and admin functionalities, enabling customers to schedule services and business owners to manage offerings and bookings.
 
 ---
 
@@ -63,25 +63,15 @@ To run this project locally:
 ### Hosting Requirements
 - Any system capable of running Node.js and MySQL
 - Internet connection for deployed use
+- Use FireFox browser to run the website
 
 ---
 
 ## 🚀 Deployed Version
 
-The Naiman platform is live:
+The Naiman platform is live on FireFox browser (due to some cookie security issues with other browsers):
 
 - **Frontend:** [https://naiman.netlify.app](https://naiman.netlify.app)
 - **Backend API:** [https://naiman.onrender.com](https://naiman.onrender.com)
 
 ---
-
-## 🔐 Sample Accounts
-
-### User Login
-- **Email:** `sampleuser100@gmail.com`
-- **Password:** `Sampleuser123!`
-
-### Admin Login
-- **Email:** `admin@naiman.com`
-- **Password:** `AdminPass123!`
-(*If your database is configured accordingly.*)
